@@ -1,0 +1,266 @@
+// Variables
+$primary-color: #4f46e5;
+$secondary-color: #7c3aed;
+$success-color: #10b981;
+$error-color: #ef4444;
+$text-primary: #111827;
+$text-secondary: #6b7280;
+$border-color: #e5e7eb;
+$white: #ffffff;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin button-base {
+  @include flex-center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: $white;
+  width: 100%;
+}
+
+// Keyframes
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Main Styles
+.photo-upload-container {
+  min-height: auto;
+  @include flex-center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+}
+
+.photo-upload-card {
+  width: 100%;
+  max-width: 32rem;
+  background: $white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.initial-options {
+  padding: 2rem;
+  animation: slideUp 0.4s ease-out;
+
+  .title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: 1.5rem;
+  }
+
+  .upload-button {
+    @include button-base;
+    background: $primary-color;
+    margin-bottom: 1rem;
+
+    &:hover {
+      background: darken($primary-color, 5%);
+      transform: translateY(-2px);
+    }
+  }
+
+  .capture-button {
+    @include button-base;
+    background: $secondary-color;
+
+    &:hover {
+      background: darken($secondary-color, 5%);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.upload-area {
+  @include flex-center;
+  flex-direction: column;
+  padding: 3rem 2rem;
+  border: 2px dashed $border-color;
+  border-radius: 1rem;
+  margin: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #f9fafb;
+  animation: slideUp 0.4s ease-out;
+
+  &.dragging {
+    border-color: $primary-color;
+    background: rgba($primary-color, 0.05);
+    transform: scale(0.98);
+  }
+
+  .upload-icon {
+    color: $text-secondary;
+    margin-bottom: 1rem;
+  }
+
+  .upload-text {
+    color: $text-secondary;
+    text-align: center;
+    font-size: 0.875rem;
+  }
+
+  &:hover {
+    border-color: $primary-color;
+    background: rgba($primary-color, 0.05);
+  }
+}
+
+.camera-container {
+  padding: 1.5rem;
+  animation: slideUp 0.4s ease-out;
+
+  .camera-preview {
+    width: 100%;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .capture-photo-button {
+    @include button-base;
+    background: $success-color;
+
+    &:hover {
+      background: darken($success-color, 5%);
+      animation: pulse 1s infinite;
+    }
+  }
+}
+
+.preview-container {
+  padding: 1.5rem;
+  animation: fadeIn 0.4s ease-out;
+
+  .preview-image-wrapper {
+    position: relative;
+    margin-bottom: 1rem;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    &:hover .success-overlay {
+      opacity: 1;
+    }
+  }
+
+  .preview-image {
+    width: 100%;
+    display: block;
+  }
+
+  .success-overlay {
+    @include flex-center;
+    flex-direction: column;
+    position: absolute;
+    inset: 0;
+    background: rgba($success-color, 0.9);
+    color: $white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    gap: 0.5rem;
+
+    svg {
+      animation: pulse 2s infinite;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+
+    .retry-button {
+      @include button-base;
+      background: $text-secondary;
+
+      &:hover {
+        background: darken($text-secondary, 5%);
+      }
+    }
+
+    .submit-button {
+      @include button-base;
+      background: $success-color;
+
+      &:hover {
+        background: darken($success-color, 5%);
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+.loading-overlay {
+  @include flex-center;
+  flex-direction: column;
+  position: absolute;
+  inset: 0;
+  background: rgba($white, 0.9);
+  gap: 1rem;
+  animation: fadeIn 0.3s ease-out;
+
+  .spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 3px solid rgba($primary-color, 0.3);
+    border-top-color: $primary-color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+.hidden-input {
+  display: none;
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .photo-upload-card {
+    margin: 0.5rem;
+  }
+
+  .initial-options {
+    padding: 1.5rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+}

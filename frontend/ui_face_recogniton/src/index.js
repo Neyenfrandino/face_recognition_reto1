@@ -4,10 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import ContextStateProvider from "./context/context_state";
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ContextStateProvider>
+      <App />
+    </ContextStateProvider>
   </React.StrictMode>
 );
 

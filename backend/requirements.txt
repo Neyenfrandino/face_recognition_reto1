@@ -4,3 +4,4 @@ face-recognition
 opencv-python
 pydantic
 numpy
+git+https://github.com/ageitgey/face_recognition_models
