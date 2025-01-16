@@ -41,22 +41,51 @@ const PhotoUploadCapture = () => {
     }
   }, [images.uploadedImage, images.capturedImage]);
 
-  const handleSubmitImages = () => {
+  const resizeImage = (imageDataUrl, maxWidth = 800, maxHeight = 600) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = imageDataUrl;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const ratio = Math.min(maxWidth / img.width, maxHeight / img.height);
+        canvas.width = img.width * ratio;
+        canvas.height = img.height * ratio;
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const resizedDataUrl = canvas.toDataURL('image/jpeg');
+        resolve(resizedDataUrl);
+      };
+    });
+  };
+  
+  const handleSubmitImages = async () => {
     if (images.uploadedImage && images.capturedImage) {
       const formData = new FormData();
-      const uploadedBlob = dataURLtoBlob(images.uploadedImage);
-      const capturedBlob = dataURLtoBlob(images.capturedImage);
-      
-      formData.append('uploadedImage', uploadedBlob);
-      formData.append('capturedImage', capturedBlob);
-
-      if (uploadedBlob && capturedBlob) {
-        console.log(images);
+  
+      // Redimensiona las imágenes antes de enviarlas
+      const resizedUploadedImage = await resizeImage(images.uploadedImage);
+      const resizedCapturedImage = await resizeImage(images.capturedImage);
+  
+      // Convertir las imágenes redimensionadas a Blob
+      const uploadedBlob = dataURLtoBlob(resizedUploadedImage);
+      const capturedBlob = dataURLtoBlob(resizedCapturedImage);
+  
+      // Crear archivos a partir de los Blobs con nombres específicos
+      const uploadedFile = new File([uploadedBlob], 'uploaded.jpg', { type: 'image/jpeg' });
+      const capturedFile = new File([capturedBlob], 'captured.jpg', { type: 'image/jpeg' });
+  
+      // Agregar los archivos al FormData con los nombres exactos que espera el backend
+      formData.append('file', uploadedFile);          // Para el parámetro 'file' del backend
+      formData.append('camera_capture', capturedFile); // Para el parámetro 'camera_capture' del backend
+  
+      try {
         console.log('FormData ready to be sent:', formData);
-        setFaces(formData);
+        await setFaces(formData);
+      } catch (error) {
+        console.error('Error sending images:', error);
       }
     }
-  };
+  }
 
   const dataURLtoBlob = (dataURL) => {
     const arr = dataURL.split(',');

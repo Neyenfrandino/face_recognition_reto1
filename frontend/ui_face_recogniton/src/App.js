@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { ContextState } from './context/context_state';
 import { Camera, Instagram, Twitter, Facebook, Linkedin } from 'lucide-react';
 import PhotoUploadCapture from './components/photoUploadCapture/photoUploadCapture.component';
+import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner.component';
 import './App.scss';
 
 const App = () => {
   const [buttonSelect, setButtonSelect] = useState(null);
+  
+  const { setFaceRecognitionData, loading, setLoading, response } = useContext(ContextState);
   
   const handleOnclick = (event) => {
     // setButtonSelect(event.target.dataset.action);
@@ -17,6 +21,8 @@ const App = () => {
     }
     
   };
+
+ 
 
   return (
     <div className="welcome-container">
@@ -36,26 +42,40 @@ const App = () => {
               <h2>¡Bienvenido a la aplicación de reconocimiento facial!</h2>
               <Camera className="camera-icon" size={48} />
             </div>
-
             {
-              buttonSelect === 'comenzar' ? (
+              loading ? (
+                <LoadingSpinner />
+              ) : response !== null ? (
+                <div className="informacion-content">
+                  <h2>¡Gracias por tus fotos!</h2>
+                  {response ? (
+                    <p>Las fotos coinciden, lo que indica que es la misma persona. ¡Gracias por tu contribución!</p>
+                  ) : (
+                    <p>Las fotos no coinciden, lo que indica que son personas diferentes. ¡Gracias por tu contribución!</p>
+                  )}
+                </div>
+              ) : buttonSelect === 'comenzar' ? (
                 <PhotoUploadCapture />
-              ) : buttonSelect !== null ? (
+              ) : buttonSelect ? (
                 <div className="informacion-content">
                   <h2>¿Qué es el reconocimiento facial?</h2>
-                  <p>El reconocimiento facial es un proceso que utiliza la cámara de tu dispositivo para identificar a una persona en una foto. Este proceso se basa en la comparación de características faciales como la expresión, la mirada y la postura, entre otras.</p>
+                  <p>
+                    El reconocimiento facial es un proceso que utiliza la cámara de tu dispositivo para identificar a una persona en una foto. Este proceso se basa en la comparación de características faciales como la expresión, la mirada y la postura, entre otras.
+                  </p>
                   <p>Este sistema consta de dos pasos principales:</p>
                   <ul>
                     <li>Comparar dos imágenes para identificar similitudes y diferencias en las características faciales.</li>
                     <li>Identificar los rostros presentes en las imágenes utilizando algoritmos avanzados.</li>
                   </ul>
-                  <p>La lógica detrás del reconocimiento facial incluye el uso de inteligencia artificial, algoritmos matemáticos y técnicas de procesamiento de imágenes. Esto permite analizar las características únicas del rostro de una persona para realizar identificaciones precisas y confiables.</p>
-                  <p>El reconocimiento facial tiene aplicaciones en diversas áreas, como la identificación de clientes en una empresa, la detección de agresores en un entorno público, entre otras.</p>
+                  <p>
+                    La lógica detrás del reconocimiento facial incluye el uso de inteligencia artificial, algoritmos matemáticos y técnicas de procesamiento de imágenes. Esto permite analizar las características únicas del rostro de una persona para realizar identificaciones precisas y confiables.
+                  </p>
+                  <p>
+                    El reconocimiento facial tiene aplicaciones en diversas áreas, como la identificación de clientes en una empresa, la detección de agresores en un entorno público, entre otras.
+                  </p>
                 </div>
               ) : null
             }
-
-
 
             <div className="action-buttons">
               {
