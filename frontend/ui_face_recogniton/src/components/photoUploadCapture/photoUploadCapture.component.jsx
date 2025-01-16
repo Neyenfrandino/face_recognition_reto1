@@ -4,7 +4,7 @@ import { ContextState } from '../../context/context_state';
 import './photoUploadCapture.style.scss';
 
 const PhotoUploadCapture = () => {
-  const{ setFaces } = useContext(ContextState);
+  const { setFaces } = useContext(ContextState);
   const [currentStep, setCurrentStep] = useState('initial');
   const [isLoading, setIsLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -19,7 +19,6 @@ const PhotoUploadCapture = () => {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
 
-  // Effect to handle camera initialization and cleanup
   useEffect(() => {
     if (currentStep === 'capture' && !cameraInitialized) {
       startCamera();
@@ -31,6 +30,17 @@ const PhotoUploadCapture = () => {
     };
   }, [currentStep, cameraInitialized]);
 
+  // Efecto para manejar la navegación automática
+  useEffect(() => {
+    if (images.uploadedImage && images.capturedImage) {
+      handleStepChange('complete');
+    } else if (images.uploadedImage && !images.capturedImage) {
+      handleStepChange('capture');
+    } else if (images.capturedImage && !images.uploadedImage) {
+      handleStepChange('upload');
+    }
+  }, [images.uploadedImage, images.capturedImage]);
+
   const handleSubmitImages = () => {
     if (images.uploadedImage && images.capturedImage) {
       const formData = new FormData();
@@ -40,8 +50,8 @@ const PhotoUploadCapture = () => {
       formData.append('uploadedImage', uploadedBlob);
       formData.append('capturedImage', capturedBlob);
 
-      if ( uploadedBlob && capturedBlob){
-        console.log(images)
+      if (uploadedBlob && capturedBlob) {
+        console.log(images);
         console.log('FormData ready to be sent:', formData);
         setFaces(formData);
       }
@@ -63,21 +73,15 @@ const PhotoUploadCapture = () => {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      processFile(file, 'upload');
+      processFile(file);
     }
   };
 
-  const processFile = (file, source) => {
+  const processFile = (file) => {
     setIsLoading(true);
     const reader = new FileReader();
     reader.onloadend = () => {
-      if (source === 'upload') {
-        setImages(prev => ({ ...prev, uploadedImage: reader.result }));
-        handleStepChange('capture');
-      } else {
-        setImages(prev => ({ ...prev, capturedImage: reader.result }));
-        handleStepChange(images.uploadedImage ? 'complete' : 'upload');
-      }
+      setImages(prev => ({ ...prev, uploadedImage: reader.result }));
       setIsLoading(false);
     };
     reader.readAsDataURL(file);
@@ -98,7 +102,7 @@ const PhotoUploadCapture = () => {
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith('image/')) {
-      processFile(file, 'upload');
+      processFile(file);
     }
   };
 
@@ -134,7 +138,6 @@ const PhotoUploadCapture = () => {
     canvas.getContext('2d').drawImage(video, 0, 0);
     const dataURL = canvas.toDataURL('image/jpeg');
     setImages(prev => ({ ...prev, capturedImage: dataURL }));
-    handleStepChange('complete');
   };
 
   const resetComponent = () => {
@@ -192,7 +195,7 @@ const PhotoUploadCapture = () => {
           </div>
         )}
 
-        {currentStep === 'capture' && !images.capturedImage && (
+        {currentStep === 'capture' && (
           <div className="camera-container">
             <video
               ref={videoRef}

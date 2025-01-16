@@ -26,7 +26,7 @@ $white: #ffffff;
 // Styles
 .welcome-container {
   min-height: 100vh;
-  padding: 2rem 1rem;
+  // padding: .1rem;
   background: linear-gradient(to bottom, $primary-color, $secondary-color);
 }
 
@@ -41,26 +41,24 @@ $white: #ffffff;
 }
 
 .logo-container {
-  position: relative;
-  text-align: center;
-  padding: 1.5rem;
-  background: linear-gradient(to right, rgba($primary-color, 0.5), rgba($secondary-color, 0.9));
+  position: fixed; // Cambiar a fixed para mantenerlo fijo en la ventana
+  bottom: 0; // Pegado al borde inferior
+  right: 0; // Pegado al borde derecho
+  background-color: transparent; // Fondo transparente
 
   .logo-image {
     width: 180px;
     height: 120px;
-    object-fit: cover;
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    // background-color: $white;
-    padding: 0.5rem;
-    transition: transform 0.3s ease;
+    object-fit: cover; // Asegurar que la imagen se ajuste correctamente
+    // padding: 0.5rem; // Espaciado interno
+    transition: transform 0.3s ease; // Suavizar la transformación al hacer hover
 
     &:hover {
-      transform: scale(1.05);
+      transform: scale(1.05); // Efecto de agrandamiento al pasar el mouse
     }
   }
 }
+
 
 .welcome-content {
   padding: 2rem;
@@ -214,5 +212,47 @@ $white: #ffffff;
       width: 36px;
       height: 36px;
     }
+  }
+}
+
+.informacion-content {
+  background-color: #f9f9f9; // Color de fondo suave
+  border: 1px solid #ddd; // Borde sutil
+  border-radius: 8px; // Bordes redondeados
+  padding: 20px; // Espaciado interno
+  max-width: 600px; // Limitar el ancho
+  margin: 20px auto; // Centrar horizontalmente
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Sombra suave
+  font-family: 'Arial', sans-serif; // Fuente legible
+  text-align: center; // Centrar texto
+
+  &:hover {
+    transform: translateY(-5px); // Elevar al pasar el mouse
+    transition: all 0.3s ease; // Animación suave
+  }
+
+  h2 {
+    font-size: 24px; // Tamaño del título
+    color: #333; // Color del texto
+    margin-bottom: 10px; // Espaciado inferior
+    text-transform: uppercase; // Transformar a mayúsculas
+  }
+
+  p {
+    font-size: 16px; // Tamaño del texto
+    line-height: 1.6; // Altura de línea
+    color: #555; // Color del texto
+    margin-bottom: 15px; // Espaciado entre párrafos
+
+    &:last-child {
+      margin-bottom: 0; // Eliminar margen inferior del último párrafo
+    }
+  }
+
+  ul {
+    text-align: left; // Alinear a la izquierda
+    margin: 10px 0 20px; // Márgenes superior e inferior
+    padding-left: 20px
+
   }
 }

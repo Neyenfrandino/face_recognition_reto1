@@ -38,14 +38,23 @@ const App = () => {
             </div>
 
             {
-              buttonSelect === 'comenzar' ?
-                <PhotoUploadCapture /> : buttonSelect !== null ?  
+              buttonSelect === 'comenzar' ? (
+                <PhotoUploadCapture />
+              ) : buttonSelect !== null ? (
                 <div className="informacion-content">
                   <h2>¿Qué es el reconocimiento facial?</h2>
-                  <p>El reconocimiento facial es un proceso que utiliza la cámara de tu dispositivo para identificar a una persona en una foto. Esto se hace mediante la comparación de características faciales, como la expresión, la mirada y la postura, entre otras.</p>
-                  <p>Este proceso puede ser útil en una variedad de aplicaciones, como la identificación de clientes en una empresa, la detección de agresores en un entorno público, entre otros.</p>
-                </div> : null
+                  <p>El reconocimiento facial es un proceso que utiliza la cámara de tu dispositivo para identificar a una persona en una foto. Este proceso se basa en la comparación de características faciales como la expresión, la mirada y la postura, entre otras.</p>
+                  <p>Este sistema consta de dos pasos principales:</p>
+                  <ul>
+                    <li>Comparar dos imágenes para identificar similitudes y diferencias en las características faciales.</li>
+                    <li>Identificar los rostros presentes en las imágenes utilizando algoritmos avanzados.</li>
+                  </ul>
+                  <p>La lógica detrás del reconocimiento facial incluye el uso de inteligencia artificial, algoritmos matemáticos y técnicas de procesamiento de imágenes. Esto permite analizar las características únicas del rostro de una persona para realizar identificaciones precisas y confiables.</p>
+                  <p>El reconocimiento facial tiene aplicaciones en diversas áreas, como la identificación de clientes en una empresa, la detección de agresores en un entorno público, entre otras.</p>
+                </div>
+              ) : null
             }
+
 
 
             <div className="action-buttons">
@@ -66,16 +75,10 @@ const App = () => {
                 <h3>¡Hola! Soy Neyen</h3>
                 <p>Puedes seguirnos en nuestras redes sociales</p>
                 <div className="social-icons">
-                  <a href="#" className="social-link">
+                  <a href="https://www.instagram.com/neyenfrandino/" className="social-link" target="_blank" rel="noopener noreferrer">
                     <Instagram size={24} />
                   </a>
-                  <a href="#" className="social-link">
-                    <Twitter size={24} />
-                  </a>
-                  <a href="#" className="social-link">
-                    <Facebook size={24} />
-                  </a>
-                  <a href="#" className="social-link">
+                  <a href="https://www.linkedin.com/in/neyen-frandino/" className="social-link" target="_blank" rel="noopener noreferrer">
                     <Linkedin size={24} />
                   </a>
                 </div>
@@ -85,16 +88,20 @@ const App = () => {
           </div>
         </div>
 
-        <div className="logo-container">
-          {/* Reemplaza la URL con la de tu logo */}
-          <img 
-            src="img/9.png" 
-            alt="Logo de la empresa" 
-            className="logo-image"
-          />
-        </div>
       </div>
+      
+      
+      <div className="logo-container">
+          {/* Reemplaza la URL con la de tu logo */}
+          <a href="https://portfolio-neyenfrandino-update.netlify.app/" target="_blank" title='Visitar Portfolio'>
+            <img 
+              src="img/9.png" 
+              alt="Logo de la empresa" 
+              className="logo-image"
+            />
+          </a>
 
+        </div>
 
     </div>
   );
