@@ -1,6 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { ContextState } from './context/context_state';
 import { Camera, Instagram, Twitter, Facebook, Linkedin } from 'lucide-react';
+import Confetti from 'react-confetti';
+
 import PhotoUploadCapture from './components/photoUploadCapture/photoUploadCapture.component';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner.component';
 import './App.scss';
@@ -8,27 +10,38 @@ import './App.scss';
 const App = () => {
   const [buttonSelect, setButtonSelect] = useState(null);
   
-  const { setFaceRecognitionData, loading, setLoading, response } = useContext(ContextState);
+  const { loading, response, setResponse } = useContext(ContextState);
   
   const handleOnclick = (event) => {
     // setButtonSelect(event.target.dataset.action);
     if (event.target.dataset.action === 'comenzar') {
       setButtonSelect('comenzar');
+      setResponse(null);
     }
 
     if (event.target.dataset.action === 'informacion') {
       setButtonSelect('informacion');
+      setResponse(null);
     }
-    
   };
 
- 
+  useEffect(() => {
+    setButtonSelect(null);
+  }, [loading]);
+
+  console.log(buttonSelect);
 
   return (
     <div className="welcome-container">
+
       <div className="welcome-card">
-
-
+        {
+          response ?
+            <Confetti
+                width={window.innerWidth}
+                height={window.innerHeight}
+            /> : null
+        }
         <div className="welcome-content">
 
           <div className="welcome-header">
@@ -49,9 +62,9 @@ const App = () => {
                 <div className="informacion-content">
                   <h2>¡Gracias por tus fotos!</h2>
                   {response ? (
-                    <p>Las fotos coinciden, lo que indica que es la misma persona. ¡Gracias por tu contribución!</p>
+                    <p><strong>Las fotos coinciden</strong>, lo que indica que es la misma persona. ¡Gracias por tu contribución!</p>
                   ) : (
-                    <p>Las fotos no coinciden, lo que indica que son personas diferentes. ¡Gracias por tu contribución!</p>
+                    <p><strong>Las fotos no coinciden</strong>, lo que indica que son personas diferentes. ¡Gracias por tu contribución!</p> 
                   )}
                 </div>
               ) : buttonSelect === 'comenzar' ? (
@@ -120,8 +133,7 @@ const App = () => {
               className="logo-image"
             />
           </a>
-
-        </div>
+      </div>
 
     </div>
   );

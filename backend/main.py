@@ -18,4 +18,6 @@ app.add_middleware(
 app.include_router(face_recognition_router.router)
 
 if __name__ == "__main__":
-    uvicorn.run('main:app', host="0.0.0.0", port=8000, reload=True, limit_max_request_size=10 * 1024 * 1024)
+    uvicorn.run('main:app', host="0.0.0.0", port=8000, reload=True)
+
+"""  limit_max_request_size=10 * 1024 * 1024 """
